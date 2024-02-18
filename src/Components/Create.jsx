@@ -1,16 +1,17 @@
-import React , {useState} from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../features/userDetailSlice";
 const Create = () => {
   const [users, setUsers] = useState({});
   const dispatch = useDispatch();
   const getUserData = (e) => {
-    setUsers({ ...users, [e.target.name]: e.target.value })
+    setUsers({ ...users, [e.target.name]: e.target.value });
+  };
+  const handelSubmit = (e) => {
+    e.preventDefault();
     console.log(users);
-  }
-  const handleSubmit = () =>
-  {
-    dispatch()
-    }
+    dispatch(createUser(users));
+  };
   return (
     <div>
       <form class="w-50 mx-auto my-5" onSubmit={handelSubmit}>
@@ -70,6 +71,6 @@ const Create = () => {
       </form>
     </div>
   );
-}
+};
 
 export default Create;
