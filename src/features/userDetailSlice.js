@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const createUser = createAsyncThunk(
   "createUser",
   async (data, { rejectWithValue }) => {
+    console.log("data", data);
     const response = await fetch(
       "https://65bfecc225a83926ab95dc58.mockapi.io/crud",
       {
@@ -27,7 +28,7 @@ export const createUser = createAsyncThunk(
 //read action
 export const showUser = createAsyncThunk(
   "showUser",
-  async ({ rejectWithValue }) => {
+  async (args , { rejectWithValue }) => {
     const response = await fetch(
       "https://65bfecc225a83926ab95dc58.mockapi.io/crud"
     );
@@ -47,19 +48,6 @@ export const userDetail = createSlice({
     users: [],
     loading: false,
     error: null,
-    extraReducers: {
-      [createUser.pending]: (state) => {
-        state.loading = true;
-      },
-      [createUser.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.users.push(action.payload);
-      },
-      [createUser.rejected]: (state, action) => {
-        state.loading = false;
-        state.users= action.payload;
-      },
-    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -80,12 +68,13 @@ export const userDetail = createSlice({
       })
       .addCase(showUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.users = (action.payload);
       })
       .addCase(showUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload.message;
-      });  },
+        state.error = action.payload;
+      });
+  },
 });
 
 export default userDetail.reducer;
