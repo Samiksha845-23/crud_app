@@ -1,6 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
+
+  const allusers = useSelector((state) => state.app.users)
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -13,7 +16,7 @@ const Navbar = () => {
           <a className="nav-link" href="#">Create Post</a>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="#">All Post</a>
+                <a className="nav-link" href="#">All Post({allusers?.length})</a>
         </li>
                       </ul>
                       
