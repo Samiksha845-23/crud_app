@@ -61,6 +61,31 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+//Edit action 
+export const updateUser = createAsyncThunk(
+  "updateUser",
+  async (data, { rejectWithValue }) => {
+    console.log("updated data", data);
+    const response = await fetch(
+      `https://65bfecc225a83926ab95dc58.mockapi.io/crud/${data.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    try {
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const userDetail = createSlice({
   name: "userDetail",
   initialState: {
@@ -87,7 +112,7 @@ export const userDetail = createSlice({
       })
       .addCase(showUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = (action.payload);
+        state.users = action.payload;
       })
       .addCase(showUser.rejected, (state, action) => {
         state.loading = false;
@@ -99,14 +124,25 @@ export const userDetail = createSlice({
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
         const { id } = action.payload;
-      if(id)
-      {  state.users = state.users.filter((ele) => ele.id !== id);}
+        if (id) {
+          state.users = state.users.filter((ele) => ele.id !== id);
+        }
         console.log("delete action", action.payload);
-        
       })
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = state.users.map((ele) => ele.id === action.payload.id ? action.payload : ele);
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
       });
   },
 });

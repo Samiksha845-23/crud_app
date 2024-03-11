@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const Navbar = () => {
 
-  const allusers = useSelector((state) => state.app.users)
+  const allusers = useSelector((state) => state.app.users);
+
+const [searchData , setSearchData] = useState('');
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,8 +22,9 @@ const Navbar = () => {
         </li>
                       </ul>
                       
-        <input className="form-control me-2 w-50" type="search" placeholder="Search" aria-label="Search"/>
-        {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
+            <input className="form-control me-2 w-50" type="search" placeholder="Search" aria-label="Search"
+              onChange={(e) => setSearchData(e.target.value)}
+        />
     </div>
   </div>
 </nav>
